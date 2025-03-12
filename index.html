@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de Casos de Uso</title>
+    <link rel="stylesheet" href="diseño.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="form-container">
+        <h1 class="form-title">Documentacion de Caso de Uso</h1>
+        <form>
+            <!-- Sección Principal -->
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Nombre del caso de uso:</label>
+                    <input type="text" placeholder="Ej: Registro de usuario" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Área:</label>
+                    <input type="text" placeholder="Ej: Autenticación" required>
+                </div>
+
+                <div class="form-group">
+                    <label>ID Único:</label>
+                    <input type="text" placeholder="Ej: UC-001" required>
+                </div>
+            </div>
+
+            <!-- Sección de Participantes -->
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Actor(es):</label>
+                    <input type="text" placeholder="Listar actores principales" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Interesados:</label>
+                    <input type="text" placeholder="Listar partes interesadas">
+                </div>
+            </div>
+
+            <!-- Sección de Detalles -->
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Nivel:</label>
+                    <select required>
+                        <option value="">Seleccionar...</option>
+                        <option>Bajo</option>
+                        <option>Medio</option>
+                        <option>Alto</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción:</label>
+                    <textarea placeholder="Descripción detallada del caso de uso..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Evento desencadenador:</label>
+                    <textarea placeholder="Evento que inicia el caso de uso..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo de desencadenador:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox"> Externo</label>
+                        <label><input type="checkbox"> Temporal</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Pasos -->
+            <div class="form-section">
+                <h3>Pasos realizados:</h3>
+                <table class="dynamic-table">
+                    <thead>
+                        <tr>
+                            <th>Paso</th>
+                            <th>Descripción</th>
+                            <th>Detalles adicionales</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="steps-body">
+                        <!-- Filas dinámicas se agregarán aquí -->
+                    </tbody>
+                </table>
+                <button type="button" class="btn-add" onclick="addStep()">+ Agregar Paso</button>
+            </div>
+
+            <!-- Sección Final -->
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Prioridad:</label>
+                    <select required>
+                        <option value="">Seleccionar...</option>
+                        <option>Baja</option>
+                        <option>Media</option>
+                        <option>Alta</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Riesgo:</label>
+                    <select required>
+                        <option value="">Seleccionar...</option>
+                        <option>Bajo</option>
+                        <option>Medio</option>
+                        <option>Alto</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Botones Finales -->
+            <div class="button-group">
+                <button type="submit" class="btn-save">Guardar Caso</button>
+                <button type="reset" class="btn-reset">Restablecer</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let stepCounter = 1;
+
+        function addStep() {
+            const tbody = document.getElementById('steps-body');
+            const newRow = document.createElement('tr');
+            
+            newRow.innerHTML = `
+                <td>${stepCounter}</td>
+                <td><input type="text" placeholder="Descripción del paso"></td>
+                <td><textarea placeholder="Detalles adicionales"></textarea></td>
+                <td><button type="button" onclick="deleteStep(this)">Eliminar</button></td>
+            `;
+            
+            tbody.appendChild(newRow);
+            stepCounter++;
+        }
+
+        function deleteStep(button) {
+            const row = button.closest('tr');
+            row.remove();
+            updateStepNumbers();
+        }
+
+        function updateStepNumbers() {
+            const rows = document.querySelectorAll('#steps-body tr');
+            rows.forEach((row, index) => {
+                row.cells[0].textContent = index + 1;
+            });
+            stepCounter = rows.length + 1;
+        }
+    </script>
+    <!-- Al final del body, antes de cerrar -->
+<script src="Logica.js"></script>
+</body>
+</html>
